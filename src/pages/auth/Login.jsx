@@ -13,9 +13,34 @@ import {
     Stack,
     Typography,
 } from "@mui/joy";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useMutation } from "@tanstack/react-query";
+import api from "../../services/api";
+import { toast } from "sonner";
+
+const login = async (credentials) => {
+    const response = await api.post("auth/login", credentials);
+    return response.data;
+};
 
 export default function Login() {
+    const navigate = useNavigate();
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: login,
+        onSuccess: (data) => {
+            toast.success("Logged in successfully");
+            navigate("/");
+        },
+        onError: (err) => {
+            toast.error(err.response?.data?.message || err.message);
+            console.error(
+                "Login failed:",
+                err.response?.data?.message || err.message
+            );
+        },
+    });
+
     const {
         register,
         handleSubmit,
@@ -27,7 +52,7 @@ export default function Login() {
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const onSubmit = (data) => {
-        console.log(data);
+        mutate(data);
     };
 
     return (
@@ -84,6 +109,7 @@ export default function Login() {
                                     message: "Invalid email address",
                                 },
                             })}
+                            disabled={isPending}
                         />
                         <Box
                             sx={{
@@ -104,20 +130,24 @@ export default function Login() {
                             size="lg"
                             type={showPassword ? "text" : "password"}
                             placeholder="Your Password"
+                            disabled={isPending}
                             {...register("password", {
                                 required: "Password is required",
+                                minLength: {
+                                    value: 8,
+                                    message:
+                                        "Password must be at least 8 characters",
+                                },
+                                maxLength: {
+                                    value: 128,
+                                    message:
+                                        "Password must be at most 128 characters",
+                                },
                             })}
                             endDecorator={
                                 <IconButton
                                     variant="plain"
                                     color="primary"
-                                    // sx={{
-                                    //     cursor: "pointer",
-                                    //     display: "flex",
-                                    //     alignItems: "center",
-
-                                    //     color: "text.tertiary",
-                                    // }}
                                     onClick={handleClickShowPassword}
                                 >
                                     {showPassword ? (
@@ -143,14 +173,19 @@ export default function Login() {
                         </Box>
                     </FormControl>
 
-                    <Button type="submit" size="lg" sx={{ width: "100%" }}>
+                    <Button
+                        type="submit"
+                        loading={isPending}
+                        size="lg"
+                        sx={{ width: "100%" }}
+                    >
                         Login
                     </Button>
                 </form>
                 <Typography mt={3} textAlign="center">
                     Don't have an account?{" "}
                     <Link to="/register">
-                        <JoyLink underline="none">register</JoyLink>
+                        <JoyLink underline="none">Register</JoyLink>
                     </Link>
                 </Typography>
             </Stack>
