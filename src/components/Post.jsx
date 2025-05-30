@@ -1,7 +1,13 @@
-import { DeleteForever, Edit, MoreVert } from "@mui/icons-material";
+import {
+    BookmarkAdd,
+    DeleteForever,
+    Edit,
+    MoreVert,
+} from "@mui/icons-material";
 import {
     AspectRatio,
     Avatar,
+    Box,
     Card,
     CardContent,
     CardOverflow,
@@ -39,24 +45,25 @@ export default function Post({ post, handleDeletePost }) {
                     <Avatar>JG</Avatar>
                     <Typography>John Doe</Typography>
                 </Stack>
-                <IconButton
-                    aria-label="bookmark Bahamas Islands"
-                    variant="plain"
-                    color="neutral"
-                    size="sm"
+                <Stack
+                    direction="row"
+                    spacing={1}
                     sx={{
                         position: "absolute",
                         top: "0.875rem",
                         right: "0.5rem",
                     }}
                 >
-                    {/* <BookmarkAdd /> */}
+                    <IconButton variant="plain" color="neutral" size="sm">
+                        <BookmarkAdd />
+                    </IconButton>
                     <Dropdown>
                         <MenuButton
                             slots={{ root: IconButton }}
                             slotProps={{
                                 root: { variant: "outlined", color: "neutral" },
                             }}
+                            component="div"
                         >
                             <MoreVert />
                         </MenuButton>
@@ -82,7 +89,7 @@ export default function Post({ post, handleDeletePost }) {
                             </MenuItem>
                         </Menu>
                     </Dropdown>
-                </IconButton>
+                </Stack>
                 <Stack mt={2} mb={1}>
                     <Typography level="title-lg">{post.title}</Typography>
                     <Typography level="body-sm">{post.description}</Typography>

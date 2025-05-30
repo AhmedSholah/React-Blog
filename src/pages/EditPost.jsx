@@ -1,13 +1,17 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
-import { createPost2, getPostById } from "../services/posts";
+import { createPost2, getPostById, updatePost } from "../services/posts";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
 import Title from "../components/Title";
 import { LuCopyPlus, LuFilePen } from "react-icons/lu";
-import { Box } from "@mui/joy";
+import { Box, Stack, Button } from "@mui/joy";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import FormTextInput from "../components/Form/FormTextInput";
+import FormTextArea from "../components/Form/FormTextArea";
+import FormFileUpload from "../components/Form/FormFileUpload";
+import { useEffect } from "react";
 
 export default function EditPost() {
     const navigate = useNavigate();
@@ -26,13 +30,23 @@ export default function EditPost() {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm();
 
+    useEffect(() => {
+        if (res?.data?.data) {
+            reset({
+                title: res.data.data.title,
+                description: res.data.data.description,
+            });
+        }
+    }, [res]);
+
     const { mutate, isPending } = useMutation({
-        mutationFn: createPost2,
+        mutationFn: ({ postId, formData }) => updatePost(postId, formData),
         onSuccess: () => {
             toast.success("Post updated successfully");
-            navigate("/");
+            // navigate("/");
         },
         onError: (err) => {
             toast.error(err.response?.data?.message || "Something went wrong");
@@ -53,7 +67,7 @@ export default function EditPost() {
             }
         }
 
-        mutate(formData);
+        mutate({ postId, formData });
     };
 
     if (isLoading) return <Loader />;
@@ -64,11 +78,6 @@ export default function EditPost() {
         <Box>
             <Title title="Edit Post" icon={LuFilePen} />
             <Stack alignItems="center">
-                <Title
-                    title="Create Post"
-                    description="Share your thoughts with the world"
-                    icon={LuCopyPlus}
-                />
                 <Stack
                     spacing={2}
                     component="form"
@@ -118,16 +127,16 @@ export default function EditPost() {
                         }}
                         isPending={isPending}
                     />
-                    <FormFileUpload
+                    {/* <FormFileUpload
                         register={register}
                         name="media"
                         errors={errors}
                         validation={{ required: "File is required" }}
                         isPending={isPending}
-                    />
+                    /> */}
 
                     <Button type="submit" fullWidth loading={isPending}>
-                        Create Post
+                        Edit Post
                     </Button>
                 </Stack>
             </Stack>
