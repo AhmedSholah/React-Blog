@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
-import Home from "./pages/home";
-import Login from "./pages/auth/login";
+import Home from "./pages/Home";
+import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import DefaultLayout from "./layouts/DefaultLayout";
 import CreatePost from "./pages/CreatePost";
