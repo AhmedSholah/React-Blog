@@ -1,12 +1,13 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:3000",
-    withCredentials: true, // send cookies with requests
-    // headers: {
-    //     "Content-Type": "application/json",
-    //     Accept: "application/json",
-    // },
+    // baseURL: import.meta.env.VITE_API_BASE_URL,
+    baseURL: "https://react-project-nest-production.up.railway.app/",
+    withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+    },
 });
 
 export default api;

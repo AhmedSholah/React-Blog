@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from "@mui/joy";
+import { Box, Button, Stack, Typography } from "@mui/joy";
 import { Link, useNavigate } from "react-router";
 import {
     LuCirclePlus,
@@ -45,6 +45,7 @@ export default function Sidebar() {
                 sx={{ display: { xs: "none", sm: "flex" } }}
             >
                 <Stack gap="1.5rem">
+                    <Typography fontWeight="bold">Blog</Typography>
                     {links.map((link) => (
                         <Link key={link.href} to={link.href}>
                             <Button
