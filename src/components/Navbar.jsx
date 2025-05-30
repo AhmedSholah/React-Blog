@@ -33,30 +33,39 @@ export default function Navbar() {
             }}
         >
             <Logo />
-            {!isAuthenticated && (
-                <Button onClick={() => navigate("/login")}>Login</Button>
-            )}
-            {isAuthenticated && (
-                <Dropdown>
-                    <MenuButton
-                        variant="plain"
-                        sx={{
-                            padding: 0,
-                            borderRadius: "50%",
-                        }}
-                    >
-                        <Avatar size="sm">
-                            {user?.username[0].toUpperCase()}
-                        </Avatar>
-                    </MenuButton>
-                    <Menu>
-                        <MenuItem disabled>Welcome, {user?.username}</MenuItem>
-                        {/* <MenuItem>Profile</MenuItem>
+            <Box>
+                {!isAuthenticated && (
+                    <Button onClick={() => navigate("/login")}>Login</Button>
+                )}
+                {isAuthenticated && (
+                    <Stack direction gap={3}>
+                        <Button>Create Post</Button>
+                        <Dropdown>
+                            <MenuButton
+                                variant="plain"
+                                sx={{
+                                    padding: 0,
+                                    borderRadius: "50%",
+                                }}
+                            >
+                                <Avatar size="sm">
+                                    {user?.username[0].toUpperCase()}
+                                </Avatar>
+                            </MenuButton>
+                            <Menu>
+                                <MenuItem disabled>
+                                    Welcome, {user?.username}
+                                </MenuItem>
+                                {/* <MenuItem>Profile</MenuItem>
                         <MenuItem>Settings</MenuItem> */}
-                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                    </Menu>
-                </Dropdown>
-            )}
+                                <MenuItem onClick={handleLogout}>
+                                    Logout
+                                </MenuItem>
+                            </Menu>
+                        </Dropdown>
+                    </Stack>
+                )}
+            </Box>
         </Stack>
     );
 }

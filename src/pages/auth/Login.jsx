@@ -195,7 +195,9 @@ export default function Login() {
                 <Typography mt={3} textAlign="center">
                     Don't have an account?{" "}
                     <Link to="/register">
-                        <JoyLink underline="none">Register</JoyLink>
+                        <JoyLink underline="none" component="span">
+                            Register
+                        </JoyLink>
                     </Link>
                 </Typography>
             </Stack>

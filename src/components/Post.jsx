@@ -112,26 +112,19 @@ export default function Post({ post, handleDeletePost }) {
                     alt="post image"
                 />
             </AspectRatio>
-            <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>
+            {/* <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>
                 <Divider inset="context" />
                 <CardContent orientation="horizontal">
-                    <Typography
-                        level="body-xs"
-                        textColor="text.secondary"
-                        sx={{ fontWeight: "md" }}
-                    >
-                        6.3k views
-                    </Typography>
                     <Divider orientation="vertical" />
                     <Typography
                         level="body-xs"
                         textColor="text.secondary"
-                        sx={{ fontWeight: "md" }}
+                        fontWeight="md"
                     >
-                        1 hour ago
+                        {post.createdAt}
                     </Typography>
                 </CardContent>
-            </CardOverflow>
+            </CardOverflow> */}
         </Card>
     );
 }
