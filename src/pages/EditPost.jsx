@@ -127,13 +127,13 @@ export default function EditPost() {
                         }}
                         isPending={isPending}
                     />
-                    {/* <FormFileUpload
+                    <FormFileUpload
                         register={register}
                         name="media"
                         errors={errors}
-                        validation={{ required: "File is required" }}
+                        // validation={{ required: "File is required" }}
                         isPending={isPending}
-                    /> */}
+                    />
 
                     <Button type="submit" fullWidth loading={isPending}>
                         Edit Post

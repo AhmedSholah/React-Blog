@@ -8,6 +8,7 @@ import {
     Stack,
     Typography,
 } from "@mui/joy";
+import Logo from "./Logo";
 
 export default function Navbar() {
     return (
@@ -24,8 +25,7 @@ export default function Navbar() {
                 },
             }}
         >
-            <Typography variant="h6">Logo</Typography>
-
+            <Logo />
             <Dropdown>
                 <MenuButton
                     variant="plain"

@@ -1,28 +1,15 @@
-import { Box, Button, Stack, Typography } from "@mui/joy";
+import { Avatar, Box, Button, Stack, Typography } from "@mui/joy";
 import { Link, useNavigate } from "react-router";
-import {
-    LuCirclePlus,
-    LuCopyPlus,
-    LuHouse,
-    LuLogOut,
-    LuUsers,
-} from "react-icons/lu";
-import { logout } from "../services/auth";
-import { toast } from "sonner";
-import { useMutation } from "@tanstack/react-query";
+import { LuBookOpen, LuCopyPlus, LuHouse, LuLogOut } from "react-icons/lu";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import Logo from "./Logo";
 
 const links = [
     {
         label: "Home",
         href: "/",
         icon: <LuHouse />,
-    },
-    {
-        label: "People",
-        href: "/about",
-        icon: <LuUsers />,
     },
     {
         label: "Create Post",
@@ -45,7 +32,33 @@ export default function Sidebar() {
                 sx={{ display: { xs: "none", sm: "flex" } }}
             >
                 <Stack gap="1.5rem">
-                    <Typography fontWeight="bold">Blog</Typography>
+                    <Logo />
+                    {isAuthenticated && (
+                        <Stack
+                            direction="row"
+                            spacing={1.5}
+                            alignItems="center"
+                            px="16px"
+                        >
+                            <Box
+                                sx={{
+                                    width: 40,
+                                    height: 40,
+                                    borderRadius: "50%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Avatar fontWeight="bold">
+                                    {user?.username[0].toUpperCase()}
+                                </Avatar>
+                            </Box>
+                            <Typography level="title-lg" fontWeight="bold">
+                                {user?.username}
+                            </Typography>
+                        </Stack>
+                    )}
                     {links.map((link) => (
                         <Link key={link.href} to={link.href}>
                             <Button
