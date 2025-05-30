@@ -39,7 +39,9 @@ export default function Navbar() {
                 )}
                 {isAuthenticated && (
                     <Stack direction gap={3}>
-                        <Button>Create Post</Button>
+                        <Button onClick={() => navigate("create-post")}>
+                            Create Post
+                        </Button>
                         <Dropdown>
                             <MenuButton
                                 variant="plain"
