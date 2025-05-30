@@ -1,6 +1,7 @@
 import {
     Avatar,
     Box,
+    Button,
     Dropdown,
     Menu,
     MenuButton,
@@ -9,8 +10,14 @@ import {
     Typography,
 } from "@mui/joy";
 import Logo from "./Logo";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
+import { useNavigate } from "react-router";
 
 export default function Navbar() {
+    const navigate = useNavigate();
+    const { user, isAuthenticated, handleLogout } = useContext(AuthContext);
+
     return (
         <Stack
             direction="row"
@@ -26,22 +33,30 @@ export default function Navbar() {
             }}
         >
             <Logo />
-            <Dropdown>
-                <MenuButton
-                    variant="plain"
-                    sx={{
-                        padding: 0,
-                        borderRadius: "50%",
-                    }}
-                >
-                    <Avatar size="sm" />
-                </MenuButton>
-                <Menu>
-                    <MenuItem>Profile</MenuItem>
-                    <MenuItem>Settings</MenuItem>
-                    <MenuItem>Logout</MenuItem>
-                </Menu>
-            </Dropdown>
+            {!isAuthenticated && (
+                <Button onClick={() => navigate("/login")}>Login</Button>
+            )}
+            {isAuthenticated && (
+                <Dropdown>
+                    <MenuButton
+                        variant="plain"
+                        sx={{
+                            padding: 0,
+                            borderRadius: "50%",
+                        }}
+                    >
+                        <Avatar size="sm">
+                            {user?.username[0].toUpperCase()}
+                        </Avatar>
+                    </MenuButton>
+                    <Menu>
+                        <MenuItem disabled>Welcome, {user?.username}</MenuItem>
+                        {/* <MenuItem>Profile</MenuItem>
+                        <MenuItem>Settings</MenuItem> */}
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                    </Menu>
+                </Dropdown>
+            )}
         </Stack>
     );
 }

@@ -18,6 +18,7 @@ import { QueryClient, useMutation } from "@tanstack/react-query";
 import api from "../../services/api";
 import { toast } from "sonner";
 import { queryClient } from "../../main";
+import Logo from "../../components/Logo";
 
 const login = async (credentials) => {
     const response = await api.post("auth/login", credentials);
@@ -73,8 +74,10 @@ export default function Login() {
                 width: 420,
             }}
         >
+            <Logo />
             <Stack
                 direction="column"
+                mt={5}
                 sx={{
                     width: "100%",
                 }}
