@@ -6,9 +6,11 @@ const Title = React.memo(({ title, description, icon: Icon }) => {
     return (
         <Box mb="2.5rem">
             <Stack direction="row">
-                <Stack justifyContent="center" alignItems={"center"} mr={1}>
-                    <Icon size={30} />
-                </Stack>
+                {!!Icon && (
+                    <Stack justifyContent="center" alignItems={"center"} mr={1}>
+                        <Icon size={30} />
+                    </Stack>
+                )}
                 <Typography fontSize={30} fontWeight="bold">
                     {title}
                 </Typography>

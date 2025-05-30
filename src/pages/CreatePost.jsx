@@ -1,14 +1,14 @@
 import { Box, Button, Stack } from "@mui/joy";
-import Title from "../../components/Title";
+import Title from "../components/Title";
 import { LuCopyPlus } from "react-icons/lu";
 import { useForm } from "react-hook-form";
-import FormTextInput from "../../components/FormTextInput";
-import FormTextArea from "../../components/FormTextArea";
+import FormTextInput from "../components/FormTextInput";
+import FormTextArea from "../components/FormTextArea";
 import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { createPost2 } from "../../services/posts";
-import FormFileUpload from "../../components/FormFileUpload";
+import { createPost2 } from "../services/posts";
+import FormFileUpload from "../components/FormFileUpload";
 
 export default function CreatePost() {
     const navigate = useNavigate();
@@ -20,16 +20,13 @@ export default function CreatePost() {
 
     const { mutate, isPending } = useMutation({
         mutationFn: createPost2,
-        onSuccess: (data) => {
+        onSuccess: () => {
             toast.success("Post created successfully");
-            // navigate("/");
+            navigate("/");
         },
         onError: (err) => {
-            toast.error(err.response?.data?.message || err.message);
-            console.error(
-                "Login failed:",
-                err.response?.data?.message || err.message
-            );
+            toast.error(err.response?.data?.message || "Something went wrong");
+            console.error(err.response?.data?.message || err.message);
         },
     });
 

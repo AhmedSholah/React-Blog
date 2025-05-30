@@ -1,6 +1,9 @@
 import { Box, Button, Stack } from "@mui/joy";
 import { Link } from "react-router";
 import { LuCirclePlus, LuCopyPlus, LuHouse, LuUsers } from "react-icons/lu";
+import { logout } from "../services/auth";
+import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
 
 const links = [
     {
@@ -21,6 +24,23 @@ const links = [
 ];
 
 export default function Sidebar() {
+    const { mutate, isPending } = useMutation({
+        mutationFn: logout,
+        onSuccess: (data) => {
+            toast.success("Logout successfully");
+            console.log(data);
+            navigate("/");
+        },
+        onError: (err) => {
+            toast.error(err.response?.data?.message);
+            console.error(err.response?.data?.message || err.message);
+        },
+    });
+
+    function handleLogout() {
+        mutate();
+    }
+
     return (
         <aside>
             <Stack
@@ -31,7 +51,7 @@ export default function Sidebar() {
                 sx={{ display: { xs: "none", sm: "flex" } }}
             >
                 {links.map((link) => (
-                    <Link to={link.href}>
+                    <Link key={link.href} to={link.href}>
                         <Button
                             fullWidth
                             variant="plain"
@@ -46,6 +66,19 @@ export default function Sidebar() {
                         </Button>
                     </Link>
                 ))}
+                <Button
+                    fullWidth
+                    variant="plain"
+                    // startDecorator={link.icon}
+                    size="lg"
+                    sx={{
+                        padding: "16px",
+                        justifyContent: "flex-start",
+                    }}
+                >
+                    {/* {link.label} */}
+                    Logout
+                </Button>
             </Stack>
         </aside>
     );

@@ -9,7 +9,15 @@ export default function DefaultLayout() {
             <Navbar />
             <Box component="main" sx={{ display: "flex" }}>
                 <Sidebar />
-                <Box bgcolor="#f9fafb" padding="56px" sx={{ flex: 1 }}>
+                <Box
+                    bgcolor="#f9fafb"
+                    padding="56px"
+                    sx={{
+                        flex: 1,
+                        maxHeight: { lg: "100vh" },
+                        overflowY: "scroll",
+                    }}
+                >
                     <Outlet />
                 </Box>
             </Box>

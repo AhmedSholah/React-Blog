@@ -8,13 +8,13 @@ export const createPost2 = (formData) => {
     });
 };
 
-// export const getPosts = () => {
-//     return api.get("/posts");
-// };
+export const getPosts = () => {
+    return api.get("/posts");
+};
 
-// export const getPostById = (id) => {
-//     return api.get(`/posts/${id}`);
-// };
+export const getPostById = (id) => {
+    return api.get(`/posts/${id}`);
+};
 
 // export const updatePost = (id, data) => {
 //     return api.put(`/posts/${id}`, data);
