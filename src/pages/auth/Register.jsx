@@ -17,6 +17,7 @@ import { Link, useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import api from "../../services/api";
 import { toast } from "sonner";
+import { queryClient } from "../../main";
 
 const register = async (data) => {
     const response = await api.post("auth/register", data);
@@ -28,9 +29,9 @@ export default function Register() {
 
     const { mutate, isPending } = useMutation({
         mutationFn: register,
-        onSuccess: (data) => {
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["user"] });
             toast.success("Account created successfully");
-            console.log(data);
             navigate("/");
         },
         onError: (err) => {

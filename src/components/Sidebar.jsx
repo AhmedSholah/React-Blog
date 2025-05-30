@@ -1,9 +1,17 @@
 import { Box, Button, Stack } from "@mui/joy";
-import { Link } from "react-router";
-import { LuCirclePlus, LuCopyPlus, LuHouse, LuUsers } from "react-icons/lu";
+import { Link, useNavigate } from "react-router";
+import {
+    LuCirclePlus,
+    LuCopyPlus,
+    LuHouse,
+    LuLogOut,
+    LuUsers,
+} from "react-icons/lu";
 import { logout } from "../services/auth";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const links = [
     {
@@ -24,61 +32,68 @@ const links = [
 ];
 
 export default function Sidebar() {
-    const { mutate, isPending } = useMutation({
-        mutationFn: logout,
-        onSuccess: (data) => {
-            toast.success("Logout successfully");
-            console.log(data);
-            navigate("/");
-        },
-        onError: (err) => {
-            toast.error(err.response?.data?.message);
-            console.error(err.response?.data?.message || err.message);
-        },
-    });
-
-    function handleLogout() {
-        mutate();
-    }
+    const navigate = useNavigate();
+    const { user, isAuthenticated, handleLogout } = useContext(AuthContext);
 
     return (
         <aside>
             <Stack
                 width={270}
+                justifyContent="space-between"
                 height="100vh"
                 p="40px 24px"
-                gap="1.5rem"
                 sx={{ display: { xs: "none", sm: "flex" } }}
             >
-                {links.map((link) => (
-                    <Link key={link.href} to={link.href}>
-                        <Button
-                            fullWidth
-                            variant="plain"
-                            startDecorator={link.icon}
-                            size="lg"
-                            sx={{
-                                padding: "16px",
-                                justifyContent: "flex-start",
-                            }}
-                        >
-                            {link.label}
-                        </Button>
-                    </Link>
-                ))}
-                <Button
-                    fullWidth
-                    variant="plain"
-                    // startDecorator={link.icon}
-                    size="lg"
-                    sx={{
-                        padding: "16px",
-                        justifyContent: "flex-start",
-                    }}
-                >
-                    {/* {link.label} */}
-                    Logout
-                </Button>
+                <Stack gap="1.5rem">
+                    {links.map((link) => (
+                        <Link key={link.href} to={link.href}>
+                            <Button
+                                fullWidth
+                                variant="plain"
+                                startDecorator={link.icon}
+                                size="lg"
+                                sx={{
+                                    padding: "16px",
+                                    justifyContent: "flex-start",
+                                }}
+                            >
+                                {link.label}
+                            </Button>
+                        </Link>
+                    ))}
+                </Stack>
+                {isAuthenticated ? (
+                    <Button
+                        fullWidth
+                        variant="plain"
+                        color="danger"
+                        startDecorator={<LuLogOut />}
+                        size="lg"
+                        sx={{
+                            padding: "16px",
+                            justifyContent: "flex-start",
+                        }}
+                        onClick={handleLogout}
+                        // loading={isPending}
+                    >
+                        Logout
+                    </Button>
+                ) : (
+                    <Button
+                        fullWidth
+                        variant="plain"
+                        color="success"
+                        startDecorator={<LuLogOut />}
+                        size="lg"
+                        sx={{
+                            padding: "16px",
+                            justifyContent: "flex-start",
+                        }}
+                        onClick={() => navigate("/login")}
+                    >
+                        Login
+                    </Button>
+                )}
             </Stack>
         </aside>
     );

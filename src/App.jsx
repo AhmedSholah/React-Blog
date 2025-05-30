@@ -5,6 +5,9 @@ import Register from "./pages/auth/Register";
 import DefaultLayout from "./layouts/DefaultLayout";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
     return (
@@ -14,8 +17,10 @@ function App() {
 
             <Route element={<DefaultLayout />}>
                 <Route index element={<Home />} />
-                <Route path="create-post" element={<CreatePost />} />
-                <Route path="edit-post/:postId" element={<EditPost />} />
+                <Route element={<PrivateRoute />}>
+                    <Route path="create-post" element={<CreatePost />} />
+                    <Route path="edit-post/:postId" element={<EditPost />} />
+                </Route>
             </Route>
         </Routes>
     );

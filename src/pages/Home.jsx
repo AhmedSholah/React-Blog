@@ -2,10 +2,12 @@ import { CircularProgress, Stack, Typography } from "@mui/joy";
 import Post from "../components/Post";
 import Title from "../components/Title";
 import { LuCopyPlus } from "react-icons/lu";
-import { useQuery } from "@tanstack/react-query";
-import { getPosts } from "../services/posts";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { deletePost, getPosts } from "../services/posts";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
+import { toast } from "sonner";
+import { queryClient } from "../main";
 
 export default function Home() {
     const {
@@ -17,8 +19,20 @@ export default function Home() {
         queryFn: getPosts,
     });
 
+    const { mutate: removePost } = useMutation({
+        mutationFn: deletePost,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["posts"] });
+            toast.success("Post Deleted Successfully");
+        },
+        onError: (err) => {
+            toast.error(err.response?.data?.message);
+            console.error(err.response?.data?.message || err);
+        },
+    });
+
     function handleDeletePost(postId) {
-        console.log(postId);
+        removePost(postId);
     }
 
     if (isLoading) {

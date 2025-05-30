@@ -1,21 +1,13 @@
-import { Button, Stack, Typography } from "@mui/joy";
+import { Button, Stack, Typography, Link } from "@mui/joy";
 
 export default function Error() {
     return (
-        <Stack>
-            <Typography textAlign={"center"}>
-                Some error occured or go back to the home page
+        <Stack spacing={2} mt={6} alignItems="center">
+            <Typography textAlign="center">
+                Oops! Something went wrong. Please try again or return to the{" "}
+                <Link href="/">home page</Link>.
             </Typography>
-            <Button
-                sx={{
-                    margin: "auto",
-                    marginTop: "1rem",
-                    width: "fit-content",
-                }}
-                onClick={() => window.location.reload()}
-            >
-                Try again
-            </Button>
+            <Button onClick={() => window.location.reload()}>Try again</Button>
         </Stack>
     );
 }

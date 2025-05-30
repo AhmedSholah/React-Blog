@@ -14,9 +14,10 @@ import {
     Typography,
 } from "@mui/joy";
 import { Link, useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 import api from "../../services/api";
 import { toast } from "sonner";
+import { queryClient } from "../../main";
 
 const login = async (credentials) => {
     const response = await api.post("auth/login", credentials);
@@ -28,7 +29,8 @@ export default function Login() {
 
     const { mutate, isPending } = useMutation({
         mutationFn: login,
-        onSuccess: (data) => {
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["user"] });
             toast.success("Logged in successfully");
             navigate("/");
         },
@@ -45,7 +47,12 @@ export default function Login() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            email: "123@gmail.com",
+            password: "123@gmail.com",
+        },
+    });
 
     const [showPassword, setShowPassword] = useState(false);
 

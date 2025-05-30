@@ -22,10 +22,12 @@ import {
     Typography,
 } from "@mui/joy";
 import DeletePostModal from "./Modals/DeletePostModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Post({ post, handleDeletePost }) {
+    const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const [showDelete, setShowDelete] = useState(false);
     const closeDeleteModal = () => {
@@ -42,54 +44,61 @@ export default function Post({ post, handleDeletePost }) {
             />
             <div>
                 <Stack direction alignItems="center" gap={1}>
-                    <Avatar>JG</Avatar>
-                    <Typography>John Doe</Typography>
+                    <Avatar>{post.author.username[0].toUpperCase()}</Avatar>
+                    <Typography>{post.author.username}</Typography>
                 </Stack>
-                <Stack
-                    direction="row"
-                    spacing={1}
-                    sx={{
-                        position: "absolute",
-                        top: "0.875rem",
-                        right: "0.5rem",
-                    }}
-                >
-                    <IconButton variant="plain" color="neutral" size="sm">
-                        <BookmarkAdd />
-                    </IconButton>
-                    <Dropdown>
-                        <MenuButton
-                            slots={{ root: IconButton }}
-                            slotProps={{
-                                root: { variant: "outlined", color: "neutral" },
-                            }}
-                            component="div"
-                        >
-                            <MoreVert />
-                        </MenuButton>
-                        <Menu placement="bottom-end">
-                            <MenuItem
-                                onClick={() =>
-                                    navigate(`/edit-post/${post._id}`)
-                                }
+                {post.author?._id === user?._id && (
+                    <Stack
+                        direction="row"
+                        spacing={1}
+                        sx={{
+                            position: "absolute",
+                            top: "0.875rem",
+                            right: "0.5rem",
+                        }}
+                    >
+                        {/* <IconButton variant="plain" color="neutral" size="sm">
+                            <BookmarkAdd />
+                        </IconButton> */}
+                        <Dropdown>
+                            <MenuButton
+                                slots={{ root: IconButton }}
+                                slotProps={{
+                                    root: {
+                                        variant: "outlined",
+                                        color: "neutral",
+                                    },
+                                }}
+                                component="div"
                             >
-                                <ListItemDecorator>
-                                    <Edit />
-                                </ListItemDecorator>{" "}
-                                Edit post
-                            </MenuItem>
-                            <MenuItem
-                                color="danger"
-                                onClick={() => setShowDelete(true)}
-                            >
-                                <ListItemDecorator sx={{ color: "inherit" }}>
-                                    <DeleteForever />
-                                </ListItemDecorator>{" "}
-                                Delete Post
-                            </MenuItem>
-                        </Menu>
-                    </Dropdown>
-                </Stack>
+                                <MoreVert />
+                            </MenuButton>
+                            <Menu placement="bottom-end">
+                                <MenuItem
+                                    onClick={() =>
+                                        navigate(`/edit-post/${post._id}`)
+                                    }
+                                >
+                                    <ListItemDecorator>
+                                        <Edit />
+                                    </ListItemDecorator>{" "}
+                                    Edit post
+                                </MenuItem>
+                                <MenuItem
+                                    color="danger"
+                                    onClick={() => setShowDelete(true)}
+                                >
+                                    <ListItemDecorator
+                                        sx={{ color: "inherit" }}
+                                    >
+                                        <DeleteForever />
+                                    </ListItemDecorator>{" "}
+                                    Delete Post
+                                </MenuItem>
+                            </Menu>
+                        </Dropdown>
+                    </Stack>
+                )}
                 <Stack mt={2} mb={1}>
                     <Typography level="title-lg">{post.title}</Typography>
                     <Typography level="body-sm">{post.description}</Typography>

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
-import { createPost2, getPostById, updatePost } from "../services/posts";
+import { getPostById, updatePost } from "../services/posts";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
 import Title from "../components/Title";
@@ -46,7 +46,7 @@ export default function EditPost() {
         mutationFn: ({ postId, formData }) => updatePost(postId, formData),
         onSuccess: () => {
             toast.success("Post updated successfully");
-            // navigate("/");
+            navigate("/");
         },
         onError: (err) => {
             toast.error(err.response?.data?.message || "Something went wrong");

@@ -1,6 +1,6 @@
 import api from "./api";
 
-export const createPost2 = (formData) => {
+export const createPost = (formData) => {
     return api.post("/posts", formData, {
         headers: {
             "Content-Type": "multipart/form-data",
@@ -24,6 +24,6 @@ export const updatePost = (id, formData) => {
     });
 };
 
-// export const deletePost = (id) => {
-//     return api.delete(`/posts/${id}`);
-// };
+export const deletePost = (id) => {
+    return api.delete(`/posts/${id}`);
+};

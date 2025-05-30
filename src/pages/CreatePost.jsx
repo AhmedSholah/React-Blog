@@ -7,7 +7,7 @@ import FormTextArea from "../components/Form/FormTextArea";
 import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { createPost2 } from "../services/posts";
+import { createPost as createNewPost } from "../services/posts";
 import FormFileUpload from "../components/Form/FormFileUpload";
 
 export default function CreatePost() {
@@ -19,7 +19,7 @@ export default function CreatePost() {
     } = useForm();
 
     const { mutate, isPending } = useMutation({
-        mutationFn: createPost2,
+        mutationFn: createNewPost,
         onSuccess: () => {
             toast.success("Post created successfully");
             navigate("/");

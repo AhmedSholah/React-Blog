@@ -7,8 +7,9 @@ import "@fontsource/inter";
 import { CssVarsProvider, extendTheme } from "@mui/joy";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
+import AuthProvider from "./context/AuthContext.jsx";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const theme = extendTheme({
     components: {
@@ -30,8 +31,10 @@ createRoot(document.getElementById("root")).render(
         <BrowserRouter>
             <CssVarsProvider theme={theme}>
                 <QueryClientProvider client={queryClient}>
-                    <Toaster richColors />
-                    <App />
+                    <AuthProvider>
+                        <Toaster richColors />
+                        <App />
+                    </AuthProvider>
                 </QueryClientProvider>
             </CssVarsProvider>
         </BrowserRouter>

@@ -24,6 +24,7 @@ export default function FormTextArea({
                 placeholder={placeholder}
                 {...register(name, validation)}
                 disabled={isPending}
+                minRows={4}
             />
             <Box
                 sx={{

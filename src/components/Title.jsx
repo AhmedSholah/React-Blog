@@ -1,8 +1,7 @@
-import { Box, Stack, Typography } from "@mui/joy";
 import React from "react";
+import { Box, Stack, Typography } from "@mui/joy";
 
 const Title = React.memo(({ title, description, icon: Icon }) => {
-    console.log("Title rerender");
     return (
         <Box mb="2.5rem">
             <Stack direction="row">
