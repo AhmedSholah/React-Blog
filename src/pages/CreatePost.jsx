@@ -53,7 +53,7 @@ export default function CreatePost() {
                 description="Share your thoughts with the world"
                 icon={LuCopyPlus}
             />
-            <Stack alignItems="center">
+            <Stack>
                 <Stack
                     spacing={2}
                     component="form"
