@@ -38,10 +38,11 @@ import CreateComment from "./CreateComment";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getComments } from "../../services/comments";
 import { timeAgo } from "../../utils/timeAgo";
-import { getReactions } from "../../services/reactions";
+import { createReaction, getReactions } from "../../services/reactions";
 import { TbShare3 } from "react-icons/tb";
 import { toast } from "sonner";
 import { sharePost } from "../../services/share";
+import { queryClient } from "../../main";
 
 const Post = ({ post, handleDeletePost }) => {
     const navigate = useNavigate();
@@ -62,7 +63,7 @@ const Post = ({ post, handleDeletePost }) => {
         queryFn: () => getReactions(post._id),
     });
 
-    const { mutate: shareBlogPost, isPending } = useMutation({
+    const { mutate: shareAPost, isPending } = useMutation({
         mutationFn: sharePost,
         onSuccess: () => {
             toast.success("Post shared successfully");
@@ -73,8 +74,26 @@ const Post = ({ post, handleDeletePost }) => {
         },
     });
 
+    const { mutate: reactToPost } = useMutation({
+        mutationFn: createReaction,
+        onSuccess: () => {
+            toast.success("Reaction added successfully");
+            queryClient.invalidateQueries({
+                queryKey: ["reactions", post._id],
+            });
+        },
+        onError: (err) => {
+            toast.error(err.response?.data?.message);
+            console.error(err.response?.data?.message || err);
+        },
+    });
+
     function handleShare(postId) {
-        shareBlogPost(postId);
+        shareAPost(postId);
+    }
+
+    function handlePostReaction(type) {
+        reactToPost({ postId: post._id, type });
     }
 
     const comments = data?.data?.data?.comments;
@@ -176,16 +195,26 @@ const Post = ({ post, handleDeletePost }) => {
                 justifyContent="space-between"
             >
                 <Stack direction="row" gap={1}>
-                    <Button color="danger" startDecorator={<FavoriteBorder />}>
+                    <Button
+                        variant="danger"
+                        color="plain"
+                        startDecorator={<FavoriteBorder />}
+                        onClick={() => handlePostReaction("love")}
+                    >
                         {reactionsData?.data?.data?.love || 0}
                     </Button>
-                    <Button variant="plain" startDecorator={<LuThumbsUp />}>
+                    <Button
+                        variant="plain"
+                        startDecorator={<LuThumbsUp />}
+                        onClick={() => handlePostReaction("like")}
+                    >
                         {reactionsData?.data?.data?.like || 0}
                     </Button>
                     <Button
                         variant="plain"
                         color="neutral"
                         startDecorator={<LuThumbsDown />}
+                        onClick={() => handlePostReaction("dislike")}
                     >
                         {reactionsData?.data?.data?.dislike || 0}
                     </Button>

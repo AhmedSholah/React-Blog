@@ -1,7 +1,7 @@
 import api from "./api";
 
-export const createReaction = (postId, data) => {
-    return api.post(`posts/${postId}/reactions`, data);
+export const createReaction = ({ postId, type }) => {
+    return api.post(`posts/${postId}/reactions`, { type });
 };
 
 export const getReactions = (postId) => {
