@@ -45,7 +45,7 @@ import { sharePost } from "../../services/share";
 
 const Post = ({ post, handleDeletePost }) => {
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
+    const { user, isAuthenticated } = useContext(AuthContext);
     const [showComments, setShowComments] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const closeDeleteModal = () => {
@@ -98,16 +98,17 @@ const Post = ({ post, handleDeletePost }) => {
                         </Typography>
                     </Box>
                 </Stack>
-                {post.author?._id === user?._id && (
-                    <Stack
-                        direction="row"
-                        spacing={1}
-                        sx={{
-                            position: "absolute",
-                            top: "0.875rem",
-                            right: "0.5rem",
-                        }}
-                    >
+
+                <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{
+                        position: "absolute",
+                        top: "0.875rem",
+                        right: "0.5rem",
+                    }}
+                >
+                    {isAuthenticated && (
                         <Tooltip title="Share">
                             <IconButton
                                 variant="plain"
@@ -119,6 +120,8 @@ const Post = ({ post, handleDeletePost }) => {
                                 <TbShare3 size="24px" />
                             </IconButton>
                         </Tooltip>
+                    )}
+                    {post.author?._id === user?._id && (
                         <Dropdown>
                             <MenuButton
                                 slots={{ root: IconButton }}
@@ -156,8 +159,8 @@ const Post = ({ post, handleDeletePost }) => {
                                 </MenuItem>
                             </Menu>
                         </Dropdown>
-                    </Stack>
-                )}
+                    )}
+                </Stack>
                 <Stack mt={2} mb={1}>
                     <Typography level="title-lg">{post.title}</Typography>
                     <Typography level="body-sm">{post.description}</Typography>
