@@ -1,5 +1,5 @@
 import { CircularProgress, Stack, Typography } from "@mui/joy";
-import Post from "../components/Post";
+import Post from "../components/Post/Post";
 import Title from "../components/Title";
 import { LuCopyPlus } from "react-icons/lu";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import Loader from "../components/Loader";
 import Error from "../components/Error";
 import { toast } from "sonner";
 import { queryClient } from "../main";
+import { useCallback } from "react";
 
 export default function Home() {
     const {
@@ -31,9 +32,12 @@ export default function Home() {
         },
     });
 
-    function handleDeletePost(postId) {
-        removePost(postId);
-    }
+    const handleDeletePost = useCallback(
+        (postId) => {
+            removePost(postId);
+        },
+        [removePost]
+    );
 
     if (isLoading) {
         return <Loader />;
